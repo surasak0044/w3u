@@ -7,8 +7,9 @@ URL = "https://api.etherscan.io/api?"
 KEY = os.getenv("ETHERSCAN_TOKEN")
 
 
-def erc20(data):
+def token_info(data, decimals=False):
     """
+    :param decimals:
     :param data: either symbol (dont'care for upper/lowercase, or address (checks for starting with 0x and decides)
     :return: list of [symbol or address, decimals]
     """
@@ -34,12 +35,13 @@ def erc20(data):
     if data.startswith("0x"):
         ret = r.loc[r["address"] == data, ["symbol", "decimals"]]
         ret.reset_index(drop=True, inplace=True)
-        return ret.loc[0]
+        return ret.loc[0].symbol if decimals is False else ret.loc[0].decimals
 
     else:
+        data = str(data).upper()
         ret = r.loc[r["symbol"] == data, ["address", "decimals"]]
         ret.reset_index(drop=True, inplace=True)
-        return ret.loc[0]
+        return ret.loc[0].address if decimals is False else ret.loc[0].decimals
 
 
 def get_abi(address):
@@ -128,4 +130,4 @@ def get_contract_src(address):
     if r["status"] != "1":
         return 1
     else:
-        return r["result"][0]['ContractName'], r["result"][0]['SourceCode']
+        return r["result"][0]["ContractName"], r["result"][0]["SourceCode"]
