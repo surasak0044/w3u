@@ -100,3 +100,32 @@ def get_transactions_by_account(account):
         return 1
     else:
         return r["result"]
+
+
+def get_contract_src(address):
+    """
+    :param address: str ethereum address
+    :return: [contractName, sourceCode]
+    """
+
+    r = None
+    url = URL + f"module=contract&action=getsourcecode&address={address}&apiKey={KEY}"
+
+    while True:
+        try:
+            r = requests.get(url).json()
+        except requests.exceptions.Timeout:
+            time.sleep(5)
+            continue
+        except requests.exceptions.TooManyRedirects as e:
+            print(f"URL cannot be reached. {e}")
+            break
+        except requests.exceptions.RequestException as e:
+            raise SystemExit(e)
+        else:
+            break
+
+    if r["status"] != "1":
+        return 1
+    else:
+        return r["result"][0]['ContractName'], r["result"][0]['SourceCode']
