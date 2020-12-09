@@ -1,6 +1,5 @@
 import w3u
 
-
 def test_erc20_address():
     assert w3u.erc20("DAI")["address"] == "0x6b175474e89094c44da98b954eedeac495271d0f"
 
