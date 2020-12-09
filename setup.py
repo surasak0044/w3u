@@ -1,11 +1,11 @@
-from setuptools import find_packages, setup
+import setuptools
 
-setup(
-    name="w3utils",
-    version="0.0.2",
+setuptools.setup(
+    name="w3u-THEGISMAR", # Replace with your own username
+    version="0.0.1",
     author="thegismar",
     description="Some convenience functions to make web3 coding easier.",
-    packages=find_packages(),
-    install_requires=[pandas],
+    url="https://github.com/thegismar/w3u",
+    packages=setuptools.find_packages(),
     python_requires='>=3.6',
 )
